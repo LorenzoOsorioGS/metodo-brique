@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Você tem perfil pra lucrar com revenda? — Método Brique</title>
+<meta name="description" content="Teste gratuito de 1 minuto: descubra se você tem perfil pra lucrar com compra e revenda de produtos e receba um plano de partida personalizado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#000000;
+    --panel:#0b0b0c;
+    --panel2:#121214;
+    --line:#222225;
+    --white:#ffffff;
+    --grey:#9a9a9f;
+    --grey2:#6b6b70;
+    --gold:#E0A93B;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  h1,h2{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.5px;line-height:1.05;text-transform:uppercase}
+  .gold{color:var(--gold)}
+
+  /* top bar */
+  .top{display:flex;align-items:center;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line)}
+  .logo{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:1px}
+  .logo b{color:var(--gold)}
+  .progress{flex:1;height:5px;background:var(--panel2);border-radius:99px;overflow:hidden}
+  .progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .4s ease}
+  .stepcount{font-size:12px;letter-spacing:1px;color:var(--grey2);min-width:44px;text-align:right}
+
+  /* stage */
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px}
+  .screen{display:none;width:100%;max-width:640px;text-align:center;animation:fade .45s ease;margin:auto}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:12px;letter-spacing:3px;color:var(--gold);font-weight:600;margin-bottom:16px}
+  .screen h1{font-size:clamp(34px,6vw,54px);margin-bottom:16px}
+  .screen h2{font-size:clamp(25px,4.5vw,38px);margin-bottom:26px}
+  .sub{color:var(--grey);font-size:17px;max-width:500px;margin:0 auto 30px}
+  .note{font-size:13px;color:var(--grey2);margin-top:16px}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--gold);color:#1a1205;font-weight:700;font-size:16px;
+    padding:16px 34px;border-radius:999px;border:none;cursor:pointer;
+    transition:transform .15s ease,box-shadow .15s ease;font-family:'Inter',sans-serif;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(224,169,59,.25)}
+
+  .qcount{font-size:13px;letter-spacing:2px;color:var(--gold);font-weight:600;margin-bottom:14px}
+  .qopts{display:flex;flex-direction:column;gap:12px;max-width:520px;margin:0 auto}
+  .qopt{background:var(--panel);border:1px solid var(--line);color:#fff;padding:18px 22px;
+    border-radius:12px;cursor:pointer;font-size:16px;font-weight:500;text-align:left;transition:.18s;font-family:'Inter',sans-serif}
+  .qopt:hover{border-color:var(--gold);background:var(--panel2)}
+  .qopt.sel{border-color:var(--gold);background:rgba(224,169,59,.08)}
+
+  /* fact interstitial */
+  .fact{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:var(--radius);padding:26px 28px;text-align:left;max-width:540px;margin:0 auto 30px}
+  .fact .big{font-family:'Anton',sans-serif;font-size:34px;color:var(--gold);line-height:1.1;margin-bottom:8px}
+  .fact p{color:var(--grey);font-size:15px}
+  .fact p b{color:#fff}
+
+  /* processing checklist */
+  .checks{max-width:420px;margin:0 auto;text-align:left}
+  .check{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);
+    color:var(--grey2);font-size:15px;opacity:.35;transition:.3s}
+  .check:last-child{border-bottom:none}
+  .check.done{opacity:1;color:#fff}
+  .check .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:0 0 auto;position:relative;transition:.3s}
+  .check.done .mark{border-color:var(--gold);background:rgba(224,169,59,.12)}
+  .check.done .mark::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+    border:solid var(--gold);border-width:0 2px 2px 0;transform:rotate(45deg)}
+
+  /* result */
+  .badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);
+    font-size:12px;letter-spacing:2px;padding:7px 16px;border-radius:99px;margin-bottom:22px;font-weight:600}
+  .plan{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 26px;text-align:left;max-width:540px;margin:0 auto 30px}
+  .plan .plan-title{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:600;margin-bottom:14px}
+  .plan .row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .plan .row:last-child{border-bottom:none}
+  .plan .row span:first-child{color:var(--grey)}
+  .plan .row span:last-child{color:#fff;font-weight:600;text-align:right}
+
+  /* offer */
+  .offer{background:var(--panel);border:1px solid var(--gold);border-radius:20px;
+    max-width:520px;margin:0 auto;padding:38px 32px;text-align:center;position:relative}
+  .ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+    background:var(--gold);color:#1a1205;font-size:12px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:99px}
+  .offer h3{font-size:22px;font-weight:700;margin-bottom:6px;font-family:'Inter',sans-serif}
+  .offer .muted{color:var(--grey);font-size:14px}
+  .incl{text-align:left;margin:24px 0;display:flex;flex-direction:column;gap:12px}
+  .incl .li{display:flex;gap:12px;align-items:flex-start;color:#d8d8da;font-size:15px}
+  .incl .d{width:7px;height:7px;border-radius:50%;background:var(--gold);margin-top:8px;flex:0 0 auto}
+  .price-old{color:var(--grey2);text-decoration:line-through;font-size:16px}
+  .price{font-family:'Anton',sans-serif;font-size:60px;color:#fff;line-height:1}
+  .price small{font-size:22px;color:var(--gold)}
+  .offer .sub2{color:var(--grey);font-size:13px;margin-top:10px}
+  .guar{max-width:520px;margin:22px auto 0;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:16px 20px;font-size:14px;color:var(--grey);text-align:left}
+  .guar b{color:#fff}
+
+  footer{padding:26px 24px;border-top:1px solid var(--line);text-align:center;color:var(--grey2);font-size:12px}
+
+  @media(max-width:520px){
+    .price{font-size:50px}
+    .fact .big{font-size:28px}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo">MÉTODO <b>BRIQUE</b></div>
+  <div class="progress"><span id="bar"></span></div>
+  <div class="stepcount" id="stepcount"></div>
+</div>
+
+<div class="stage">
+
+  <!-- INTRO / HOOK -->
+  <div class="screen active" id="intro">
+    <p class="eyebrow">TESTE GRATUITO DE 1 MINUTO</p>
+    <h1>Você tem perfil pra<br><span class="gold">lucrar com revenda?</span></h1>
+    <p class="sub">O mercado de produtos de segunda mão movimenta bilhões por ano no Brasil — e a maioria das pessoas não faz ideia de como entrar nele. Responda 5 perguntas e descubra seu ponto de partida.</p>
+    <button class="btn" onclick="start()">Fazer o teste agora</button>
+    <p class="note">Sem cadastro · Resultado na hora</p>
+  </div>
+
+  <!-- QUESTIONS (injected) -->
+  <div id="steps"></div>
+
+  <!-- FACT INTERSTITIAL -->
+  <div class="screen" id="fact">
+    <p class="eyebrow">ENQUANTO VOCÊ RESPONDE</p>
+    <h2>O mercado já decidiu</h2>
+    <div class="fact">
+      <div class="big">8 em cada 10</div>
+      <p>brasileiros já compraram produtos de segunda mão — e esse número cresce todo ano. <b>Quem sabe comprar e revender lucra nas duas pontas:</b> paga barato de quem quer vender rápido e vende pelo preço justo pra quem procura.</p>
+    </div>
+    <button class="btn" onclick="afterFact()">Continuar o teste</button>
+  </div>
+
+  <!-- PROCESSING -->
+  <div class="screen" id="processing">
+    <h2 style="margin-bottom:30px">Calculando seu resultado</h2>
+    <div class="checks">
+      <div class="check"><span class="mark"></span> Analisando seu momento atual</div>
+      <div class="check"><span class="mark"></span> Comparando com perfis que já revendem</div>
+      <div class="check"><span class="mark"></span> Definindo seu capital de partida ideal</div>
+      <div class="check"><span class="mark"></span> Montando seu plano personalizado</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="result">
+    <span class="badge">RESULTADO</span>
+    <h2 id="resTitle"></h2>
+    <p class="sub" id="resText"></p>
+    <div class="plan">
+      <div class="plan-title">SEU PLANO DE PARTIDA</div>
+      <div class="row"><span>Sua meta mensal</span><span id="planMeta"></span></div>
+      <div class="row"><span>Giro inicial sugerido</span><span id="planGiro"></span></div>
+      <div class="row"><span>Vendas pra bater a meta</span><span id="planVendas"></span></div>
+      <div class="row"><span>Dedicação necessária</span><span id="planTempo"></span></div>
+    </div>
+    <button class="btn" onclick="show('offer')">Ver como executar esse plano</button>
+  </div>
+
+  <!-- OFFER -->
+  <div class="screen" id="offer">
+    <p class="eyebrow" id="offerEyebrow">O CAMINHO PRA EXECUTAR SEU PLANO</p>
+    <div class="offer">
+      <span class="ribbon">ACESSO VITALÍCIO</span>
+      <h3>Curso Método Brique</h3>
+      <p class="muted">O passo a passo de quem vive de comprar e revender</p>
+      <div class="incl">
+        <div class="li"><span class="d"></span> 5 módulos práticos, do zero ao primeiro lucro</div>
+        <div class="li"><span class="d"></span> Lista de fornecedores verificados pela Baronesa</div>
+        <div class="li"><span class="d"></span> Comunidade exclusiva com oportunidades diárias</div>
+        <div class="li"><span class="d"></span> Acesso vitalício, assista quando e quantas vezes quiser</div>
+      </div>
+      <div class="price-old">de R$ 497</div>
+      <div class="price"><small>R$</small> 8<small>,00/mês</small></div>
+      <p class="sub2">ou R$ 97 à vista — pagamento 100% seguro pela Kiwify</p>
+      <!-- TROCAR: colocar o link do checkout da Kiwify no href -->
+      <a class="btn" style="margin-top:22px;width:100%" href="#">Começar por R$8,00/mês</a>
+    </div>
+    <div class="guar"><b>Garantia de 7 dias.</b> Não gostou? Devolvemos 100% do seu dinheiro, sem perguntas. O risco é todo nosso.</div>
+  </div>
+
+</div>
+
+<footer>
+  Método Brique · Por Nery e Baronesa · Este produto não garante ganhos. Os resultados variam de pessoa para pessoa.
+</footer>
+
+<script>
+const QUESTIONS = [
+  { q:"Você já comprou algo usado ou de segunda mão?",
+    a:["Sim, várias vezes","Já, algumas vezes","Nunca comprei"] },
+  { q:"Quanto você gostaria de tirar por mês com revenda?",
+    a:["De R$ 500 a R$ 1.000","De R$ 1.000 a R$ 3.000","Mais de R$ 3.000"] },
+  { q:"Qual dessas frases mais descreve sua situação hoje?",
+    a:["Preciso de renda extra com urgência","Tenho renda, mas quero ganhar mais","Quero construir meu próprio negócio"] },
+  { q:"Se aparecesse um iPhone por R$ 800 que revende fácil por R$ 1.400, você conseguiria aproveitar?",
+    a:["Hoje não teria como","Teria, com algum esforço","Teria tranquilamente"] },
+  { q:"Você conseguiria dedicar 30 minutos por dia pra fazer seu dinheiro girar?",
+    a:["Sim, com certeza","Acho que sim","Teria dificuldade"] }
+];
+const FACT_AFTER = 1; // interstitial depois da 2ª pergunta
+const answers = [];
+
+const stepsEl = document.getElementById('steps');
+const barEl = document.getElementById('bar');
+const countEl = document.getElementById('stepcount');
+const TOTAL = QUESTIONS.length;
+
+stepsEl.outerHTML = QUESTIONS.map((item,i)=>`
+  <div class="screen" data-i="${i}">
+    <div class="qcount">PERGUNTA ${i+1} DE ${TOTAL}</div>
+    <h2>${item.q}</h2>
+    <div class="qopts">
+      ${item.a.map((opt,j)=>`<button class="qopt" onclick="answer(${i},${j},this)">${opt}</button>`).join('')}
+    </div>
+  </div>`).join('');
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = typeof id==='number'
+    ? document.querySelector('.screen[data-i="'+id+'"]')
+    : document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+function setProgress(i){
+  barEl.style.width = (i/TOTAL*100)+'%';
+  countEl.textContent = i>0 && i<=TOTAL ? i+'/'+TOTAL : '';
+}
+function start(){ setProgress(0); show(0); countEl.textContent='0/'+TOTAL; }
+function answer(i,j,btn){
+  answers[i]=j;
+  btn.parentNode.querySelectorAll('.qopt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  setProgress(i+1);
+  setTimeout(()=>{
+    if(i===FACT_AFTER){ show('fact'); }
+    else if(i<TOTAL-1){ show(i+1); }
+    else { runProcessing(); }
+  },300);
+}
+function afterFact(){ show(FACT_AFTER+1); }
+function runProcessing(){
+  show('processing');
+  const items=document.querySelectorAll('#processing .check');
+  items.forEach((el,k)=> setTimeout(()=>el.classList.add('done'), 700*(k+1)) );
+  setTimeout(showResult, 700*items.length + 1100);
+}
+function showResult(){
+  const [usado,meta,situacao,capital,tempo] = answers;
+
+  // perfil pela situação atual
+  const perfis=["Perfil Renda Imediata","Perfil Acelerador","Perfil Empreendedor"];
+  const perfilTxt=[
+    "Você precisa de resultado rápido — e revenda é uma das poucas formas de gerar caixa na primeira semana, sem depender de chefe ou de sorte.",
+    "Você já tem uma base e quer multiplicar. Com giros consistentes, sua renda extra pode passar a principal mais rápido do que imagina.",
+    "Você pensa como dono. A revenda é o negócio com a menor barreira de entrada que existe: começa pequeno e escala no seu ritmo."
+  ];
+
+  // plano baseado na meta + capital
+  const metas=["R$ 500 – R$ 1.000","R$ 1.000 – R$ 3.000","R$ 3.000+"];
+  const giros=[
+    ["R$ 100 – R$ 300","R$ 300 – R$ 500","R$ 500 – R$ 1.000"],   // meta 0
+    ["R$ 300 – R$ 500","R$ 500 – R$ 1.000","R$ 1.000 – R$ 2.000"],// meta 1
+    ["R$ 500 – R$ 1.000","R$ 1.000 – R$ 2.000","R$ 2.000+"]       // meta 2
+  ];
+  const vendas=["4 a 6 por mês","8 a 12 por mês","15+ por mês"];
+  const tempos=["30 min por dia","30 a 60 min por dia","1h+ por dia"];
+
+  document.getElementById('resTitle').textContent = perfis[situacao??0];
+  document.getElementById('resText').textContent = perfilTxt[situacao??0];
+  document.getElementById('planMeta').textContent   = metas[meta??0];
+  document.getElementById('planGiro').textContent   = giros[meta??0][capital??0];
+  document.getElementById('planVendas').textContent = vendas[meta??0];
+  document.getElementById('planTempo').textContent  = tempos[tempo===2?1:(meta??0)>1?2:(tempo??0)] || tempos[0];
+  document.getElementById('offerEyebrow').textContent = "PLANO COMPATÍVEL COM: " + perfis[situacao??0].toUpperCase();
+  setProgress(TOTAL);
+  show('result');
+}
+</script>
+</body>
+</html>
