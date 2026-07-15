@@ -207,6 +207,11 @@
   footer{padding:40px 0;border-top:1px solid var(--line);text-align:center;color:var(--grey2);font-size:13px}
   footer .logo{font-size:16px;margin-bottom:10px;color:#fff}
 
+  /* scroll reveal */
+  .reveal-on-scroll{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal-on-scroll.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1;transform:none;transition:none}}
+
   /* ===== responsive ===== */
   @media(max-width:860px){
     .hero-grid{grid-template-columns:1fr;gap:36px}
@@ -351,7 +356,7 @@
       <div class="modcard"><div class="thumb"><span class="num">03</span></div><div class="mbody"><div class="mtag">MÓDULO 03</div><h4>Precificação</h4><p>Cálculos simples pra você nunca ter prejuízo e sempre saber sua margem.</p></div></div>
       <div class="modcard"><div class="thumb"><span class="num">04</span></div><div class="mbody"><div class="mtag">MÓDULO 04</div><h4>Venda rápida</h4><p>Grupos, marketplaces e redes sociais: onde e como vender no menor tempo.</p></div></div>
       <div class="modcard"><div class="thumb"><span class="num">05</span></div><div class="mbody"><div class="mtag">MÓDULO 05</div><h4>Gestão de capital</h4><p>Girar e reinvestir com inteligência pra fazer seu dinheiro crescer.</p></div></div>
-      <div class="modcard" style="border-color:var(--gold)"><div class="thumb"><span class="num gold" style="color:rgba(224,169,59,.5)">★</span></div><div class="mbody"><div class="mtag">BÔNUS</div><h4>Fornecedores + Mentoria + Comunidade</h4><p>Fornecedores verificados, mentoria em call com a Baronesa e grupo exclusivo.</p></div></div>
+      <div class="modcard" style="border-color:var(--gold)"><div class="thumb"><span class="num gold" style="color:rgba(224,169,59,.5)">★</span></div><div class="mbody"><div class="mtag">BÔNUS</div><h4>Fornecedores + Comunidade</h4><p>Lista de fornecedores verificados pela Baronesa e grupo exclusivo com oportunidades diárias.</p></div></div>
     </div>
   </div>
 </section>
@@ -543,6 +548,25 @@ function toggleFaq(btn){ btn.parentNode.classList.toggle('open'); }
 
 /* ===================== ESC closes quiz ===================== */
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeQuiz(); });
+
+/* ===================== SCROLL REVEAL ===================== */
+(function(){
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('in'), +e.target.dataset.revDelay||0);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('header .wrap, section .wrap, footer .wrap').forEach(wrap=>{
+    [...wrap.children].forEach((el,i)=>{
+      el.classList.add('reveal-on-scroll');
+      el.dataset.revDelay=i*70;   // escalonamento suave dentro de cada bloco
+      io.observe(el);
+    });
+  });
+})();
 </script>
 </body>
 </html>
